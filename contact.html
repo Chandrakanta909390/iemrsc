@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEMRSC - Contact</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#0f172a;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* CANVAS */
+#hexCanvas, #particleCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+
+#hexCanvas{ z-index:0; }
+#particleCanvas{ z-index:1; }
+
+.content-wrapper{
+    position:relative;
+    z-index:10;
+}
+
+/* SECTION */
+section{
+    min-height:100vh;
+    padding:120px 20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+}
+
+h1{
+    font-family:'Orbitron',sans-serif;
+    margin-bottom:20px;
+}
+
+/* SOCIAL */
+.social-links{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:25px;
+    margin-top:15px;
+}
+
+.social-links a{
+    text-decoration:none;
+    color:#00f7ff;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    transition:0.3s;
+}
+
+.social-links a:hover{
+    text-shadow:0 0 10px #00f7ff;
+    transform:translateY(-3px) scale(1.1);
+}
+
+/* CARD SECTION */
+.card-container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+    margin-top:30px;
+}
+.nav-links li{
+    font-size:16px;   /* 👈 force same size */
+    font-weight:500;
+}
+.nav-links{
+    gap:30px;
+}
+
+.nav-links li{
+    font-size:16px;
+}
+.nav-links a:hover{
+    color:#00f7ff;
+    text-shadow:0 0 10px #00f7ff;
+}
+.card{
+    width:220px;
+    height:280px;
+    border-radius:16px;
+    overflow:hidden;
+    cursor:pointer;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(0,247,255,0.3);
+
+    transition:0.4s ease;
+}
+
+.card img{
+    width:100%;
+    height:60%;
+    object-fit:cover;
+}
+
+.card:hover{
+    height:340px;
+    transform:translateY(-10px) scale(1.05);
+    box-shadow:0 0 25px #00f7ff;
+}
+
+.card-info{
+    opacity:0;
+    transform:translateY(20px);
+    transition:0.3s;
+}
+
+.card:hover .card-info{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* CONTACT BOX */
+.contact-box{
+    width:100%;
+    max-width:500px;
+    padding:30px;
+    border-radius:16px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(0,247,255,0.3);
+    box-shadow:0 0 15px rgba(0,247,255,0.2);
+}
+
+/* LOCATION */
+.location-section{
+    margin-top:60px;
+}
+
+.location-heading{
+    font-family:'Orbitron',sans-serif;
+    color:#00f7ff;
+    margin-bottom:20px;
+}
+
+.location-box{
+    max-width:800px;
+    margin:auto;
+    padding:20px;
+    border-radius:16px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(0,247,255,0.3);
+}
+
+.address{
+    margin-top:15px;
+    font-size:14px;
+    color:#ccc;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+
+    background:#00f7ff;
+    color:black;
+    font-weight:600;
+
+    transition:0.3s;
+}
+
+button:hover{
+    box-shadow:0 0 20px #00f7ff;
+    transform:scale(1.05);
+}
+</style>
+</head>
+
+<body>
+    <div id="navbar"></div>
+
+<canvas id="hexCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+
+<div class="content-wrapper">
+
+<section>
+
+<h1>Contact Us</h1>
+
+<div class="contact-box">
+
+<hr style="margin:20px 0; opacity:0.2;">
+
+<div class="social-links">
+    <a href="https://www.facebook.com/profile.php?id=61581322419303"><i class="fab fa-facebook"></i> Facebook</a>
+  
+    <a href="https://www.instagram.com/iemrsc?igsh=MTZ6cmZ4bjBwNzQ3eA=="><i class="fab fa-instagram"></i> Instagram</a>
+    <a href="https://chat.whatsapp.com/JsuVi9mwDIl44cUZRWgpvK" target="_blank">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+    </a>
+</div>
+
+<hr style="margin:20px 0; opacity:0.2;">
+
+<a href="https://forms.gle/7rhiMJ9qDa6ZKWU98" target="_blank">
+    <button>Drop Your feedback</button>
+</a>
+
+</div>
+
+<h1><br>YOU MAY ASK TO</h1>
+
+<div class="card-container">
+
+<div class="card">
+    <img src="sop.jpg">
+    <h3>Prof.Dr. Soumyadipta Pal</h3>
+    <div class="card-info">
+        <p>Lead Coordinator<br><br> ph:- 8017244056</p>
+    </div>
+</div>
+
+<div class="card">
+    <img src="dibyasree.jpg">
+    <h3>Prof.Dr. Dibyasree Choudhury</h3>
+    <div class="card-info">
+        <p>Lead Coordinator <br> <br> ph:- 7044068098</p>
+    </div>
+</div>
+
+<div class="card">
+    <img src="crr.jpeg">
+    <h3>Chandrakanta Rana</h3>
+    <div class="card-info">
+        <p>Student Coordinator<br><br> ph:-6297979452</p>
+    
+    <a href="https://www.linkedin.com/in/chandrakanta-rana-15a06832a/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B3ePL5zhaThefuOtH5q5MfA%3D%3D">LinkedIn</a>
+</div></div>
+</div>
+
+</div>
+
+<section class="location-section">
+
+<h2 class="location-heading">Our Location</h2>
+
+<div class="location-box">
+
+<iframe 
+src="https://www.google.com/maps?q=Institute%20of%20Engineering%20and%20Management%20Kolkata&output=embed"
+width="100%" height="300" style="border:0;">
+</iframe>
+
+<p class="address">
+Institute of Engineering & Management (IEM) <br>
+Salt Lake Electronics Complex, Kolkata
+</p>
+
+</div>
+
+</section>
+
+</section>
+
+</div>
+
+<script>
+/* HEX + PARTICLES SAME */
+const hexCanvas=document.getElementById("hexCanvas");
+const hexCtx=hexCanvas.getContext("2d");
+const particleCanvas=document.getElementById("particleCanvas");
+const pCtx=particleCanvas.getContext("2d");
+
+let grid=[];
+const HEX_SIZE=35;
+
+function resize(){
+    hexCanvas.width=window.innerWidth;
+    hexCanvas.height=window.innerHeight;
+    particleCanvas.width=window.innerWidth;
+    particleCanvas.height=window.innerHeight;
+
+    const w=Math.sqrt(3)*HEX_SIZE;
+    const h=2*HEX_SIZE;
+
+    grid=[];
+    for(let r=0;r<30;r++){
+        for(let c=0;c<30;c++){
+            const offset=(r%2===0)?0:w/2;
+            grid.push({x:c*w+offset,y:r*(h*0.75),i:Math.random()*0.3});
+        }
+    }
+}
+window.addEventListener("resize",resize);
+
+function drawHex(x,y,size,i){
+    hexCtx.beginPath();
+    for(let k=0;k<6;k++){
+        const a=Math.PI/3*k;
+        const px=x+size*Math.cos(a);
+        const py=y+size*Math.sin(a);
+        k===0?hexCtx.moveTo(px,py):hexCtx.lineTo(px,py);
+    }
+    hexCtx.closePath();
+    hexCtx.strokeStyle=`rgba(16,185,129,${i})`;
+    hexCtx.stroke();
+}
+
+function animateHex(){
+    hexCtx.clearRect(0,0,hexCanvas.width,hexCanvas.height);
+    grid.forEach(h=>{
+        h.i+=(Math.random()-0.5)*0.02;
+        h.i=Math.max(0.05,Math.min(0.3,h.i));
+        drawHex(h.x,h.y,HEX_SIZE,h.i);
+    });
+    requestAnimationFrame(animateHex);
+}
+
+let particles=[];
+for(let i=0;i<120;i++){
+    particles.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,s:Math.random()*2,sp:Math.random()+0.3});
+}
+
+function animateParticles(){
+    pCtx.clearRect(0,0,particleCanvas.width,particleCanvas.height);
+    pCtx.fillStyle="white";
+
+    particles.forEach(p=>{
+        pCtx.beginPath();
+        pCtx.arc(p.x,p.y,p.s,0,Math.PI*2);
+        pCtx.fill();
+        p.y+=p.sp;
+        if(p.y>innerHeight){p.y=0;p.x=Math.random()*innerWidth;}
+    });
+
+    requestAnimationFrame(animateParticles);
+}
+
+resize();
+animateHex();
+animateParticles();
+</script>
+<script>
+fetch("navbar.html")
+.then(res => res.text())
+.then(data => {
+    document.getElementById("navbar").innerHTML = data;
+});
+</script>
+
+</body>
+</html>

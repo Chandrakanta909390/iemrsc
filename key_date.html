@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEMRSC - Key Dates</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#0f172a;
+    color:white;
+    overflow:hidden;
+}
+
+
+/* BACKGROUND EFFECT */
+#hexCanvas, #particleCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+
+#hexCanvas{ z-index:0; }
+#particleCanvas{ z-index:1; }
+
+.container{
+    position:relative;
+    z-index:10;
+}
+/* CONTENT */
+.container{
+    position:relative;
+    z-index:10;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+}
+
+/* CARD */
+.card{
+    width:100%;
+    max-width:600px;
+    padding:40px;
+    border-radius:18px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(14px);
+    border:1px solid rgba(0,247,255,0.3);
+
+    box-shadow:0 0 30px rgba(0,247,255,0.2);
+    text-align:center;
+}
+
+/* TITLE */
+.card h1{
+    font-family:'Orbitron',sans-serif;
+    color:#00f7ff;
+    margin-bottom:30px;
+
+    text-shadow:
+        0 0 10px #00f7ff,
+        0 0 25px rgba(0,247,255,0.5);
+}
+
+/* DATE ITEMS */
+.date-item{
+    margin:15px 0;
+    padding:12px;
+    border-radius:10px;
+    background:rgba(255,255,255,0.03);
+    transition:0.3s;
+}
+
+.date-item:hover{
+    transform:translateY(-5px);
+    box-shadow:0 0 15px #00f7ff;
+}
+
+.label{
+    font-size:14px;
+    color:#ccc;
+}
+
+.value{
+    font-size:18px;
+    color:#facc15; /* golden */
+    font-weight:600;
+    margin-top:5px;
+}
+
+/* FOOTER NOTE */
+.note{
+    margin-top:25px;
+    font-size:14px;
+    color:#facc15;
+    font-weight:500;
+}
+
+/* GLOW LINES (like your image) */
+.card::before, .card::after{
+    content:'';
+    position:absolute;
+    width:120%;
+    height:6px;
+    background:linear-gradient(90deg, transparent, #00f7ff, transparent);
+    left:-10%;
+}
+.container{
+    margin-top:80px;
+}
+.card::before{
+    top:0;
+}
+
+.card::after{
+    bottom:0;
+}
+
+/* RESPONSIVE */
+@media(max-width:500px){
+    .card{
+        padding:25px;
+    }
+}
+</style>
+</head>
+
+<body>
+    <canvas id="hexCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+
+<div id="bg"></div>
+<div id="navbar"></div>
+<script>
+fetch("navbar.html")
+.then(res => res.text())
+.then(data => {
+    document.getElementById("navbar").innerHTML = data;
+});
+
+</script>
+<div class="container">
+
+    <div class="card">
+        <h1>Important Dates</h1>
+
+        <div class="date-item">
+            <div class="label">Last Date for Extended Abstract Submission</div>
+            <div class="value">15<sup>th</sup> May, 2026</div>
+        </div>
+
+        <div class="date-item">
+            <div class="label">Acceptance Notification</div>
+            <div class="value">20<sup>th</sup> May, 2026</div>
+        </div>
+
+        <div class="date-item">
+            <div class="label">Early Bird Registration</div>
+            <div class="value">10<sup>th</sup> June, 2026</div>
+        </div>
+
+        <div class="date-item">
+            <div class="label">Late Bird Registration</div>
+            <div class="value">Up to 25<sup>th</sup> June, 2026</div>
+        </div>
+
+        <div class="note">
+            (With 20% hike in registration fee)
+        </div>
+
+    </div>
+
+</div>
+<script>
+////////////////////////
+// HEX GRID
+////////////////////////
+const hexCanvas=document.getElementById("hexCanvas");
+const hexCtx=hexCanvas.getContext("2d");
+
+let grid=[];
+const HEX_SIZE=35;
+
+function resize(){
+    hexCanvas.width=window.innerWidth;
+    hexCanvas.height=window.innerHeight;
+    particleCanvas.width=window.innerWidth;
+    particleCanvas.height=window.innerHeight;
+    generateGrid();
+}
+window.addEventListener("resize",resize);
+
+function generateGrid(){
+    grid=[];
+    const w=Math.sqrt(3)*HEX_SIZE;
+    const h=2*HEX_SIZE;
+
+    const rows=Math.ceil(window.innerHeight/(h*0.75))+5;
+    const cols=Math.ceil(window.innerWidth/w)+5;
+
+    for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+            const offset=(r%2===0)?0:w/2;
+            grid.push({
+                x:c*w+offset,
+                y:r*(h*0.75),
+                intensity:Math.random()*0.3
+            });
+        }
+    }
+}
+
+function drawHex(x,y,size,intensity){
+    hexCtx.beginPath();
+    for(let i=0;i<6;i++){
+        const a=Math.PI/3*i;
+        const px=x+size*Math.cos(a);
+        const py=y+size*Math.sin(a);
+        i===0?hexCtx.moveTo(px,py):hexCtx.lineTo(px,py);
+    }
+    hexCtx.closePath();
+    hexCtx.strokeStyle=`rgba(16,185,129,${intensity})`;
+    hexCtx.stroke();
+}
+
+function animateHex(){
+    hexCtx.clearRect(0,0,hexCanvas.width,hexCanvas.height);
+
+    grid.forEach(hex=>{
+        hex.intensity+=(Math.random()-0.5)*0.02;
+        hex.intensity=Math.max(0.05,Math.min(0.3,hex.intensity));
+        drawHex(hex.x,hex.y,HEX_SIZE,hex.intensity);
+    });
+
+    requestAnimationFrame(animateHex);
+}
+
+////////////////////////
+// PARTICLES
+////////////////////////
+const particleCanvas=document.getElementById("particleCanvas");
+const pCtx=particleCanvas.getContext("2d");
+
+let particles=[];
+for(let i=0;i<120;i++){
+    particles.push({
+        x:Math.random()*window.innerWidth,
+        y:Math.random()*window.innerHeight,
+        size:Math.random()*2,
+        speed:Math.random()*1+0.3
+    });
+}
+
+function animateParticles(){
+    pCtx.clearRect(0,0,particleCanvas.width,particleCanvas.height);
+    pCtx.fillStyle="rgba(255,255,255,0.6)";
+
+    particles.forEach(p=>{
+        pCtx.beginPath();
+        pCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        pCtx.fill();
+
+        p.y+=p.speed;
+        if(p.y>window.innerHeight){
+            p.y=0;
+            p.x=Math.random()*window.innerWidth;
+        }
+    });
+
+    requestAnimationFrame(animateParticles);
+}
+
+resize();
+animateHex();
+animateParticles();
+
+function goPage(page){
+    window.location.href = page;
+}
+
+</script>
+
+</body>
+</html>

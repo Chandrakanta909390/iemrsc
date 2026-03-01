@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedarthi | Smart Voice Reader</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    display:flex;
+    background:#f4f7ff;
+    height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:250px;
+    background:linear-gradient(180deg,#667eea,#764ba2);
+    color:#fff;
+    padding:30px 20px;
+}
+
+.sidebar h2{
+    margin-bottom:40px;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    margin:20px 0;
+    cursor:pointer;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:40px;
+    overflow-y:auto;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* CARD */
+.reader-card{
+    margin-top:30px;
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.08);
+}
+
+/* TEXTAREA */
+#textInput{
+    width:100%;
+    height:120px;
+    padding:15px;
+    border-radius:15px;
+    border:1px solid #ddd;
+    font-size:16px;
+}
+
+/* CONTROLS */
+.controls{
+    margin-top:20px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+button,select{
+    padding:10px 18px;
+    border-radius:30px;
+    border:none;
+    cursor:pointer;
+    font-weight:500;
+}
+
+button{
+    background:#667eea;
+    color:#fff;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+.practice-btn{
+    background:#28a745;
+}
+
+.stop-btn{
+    background:#dc3545;
+}
+
+/* WAVE */
+.wave{
+    margin-top:20px;
+    display:flex;
+    gap:5px;
+    height:30px;
+    align-items:flex-end;
+}
+
+.bar{
+    width:6px;
+    background:#667eea;
+    animation:wave 1s infinite ease-in-out;
+}
+
+.bar:nth-child(2){animation-delay:0.1s;}
+.bar:nth-child(3){animation-delay:0.2s;}
+.bar:nth-child(4){animation-delay:0.3s;}
+.bar:nth-child(5){animation-delay:0.4s;}
+
+@keyframes wave{
+    0%,100%{height:10px;}
+    50%{height:30px;}
+}
+
+/* PROGRESS */
+.progress-container{
+    margin-top:20px;
+    background:#eee;
+    height:8px;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.progress{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#667eea,#764ba2);
+    transition:0.3s;
+}
+
+/* STATS */
+.reading-stats{
+    margin-top:25px;
+    display:flex;
+    gap:30px;
+    justify-content:center;
+}
+
+.reading-stats div{
+    background:#f4f7ff;
+    padding:15px 25px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 8px 15px rgba(0,0,0,0.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Vedarthi</h2>
+    <ul>
+        <li>Dashboard</li>
+        <li><strong>Smart Voice Reader</strong></li>
+        <li>Progress</li>
+        <li>Consultancy</li>
+        <li>Premium</li>
+    </ul>
+</div>
+
+<div class="main">
+
+<div class="header">
+    <h1>Smart AI Voice Reader</h1>
+</div>
+
+<div class="reader-card">
+
+<textarea id="textInput">
+Reading builds confidence and strengthens understanding. 
+Vedarthi helps students practice effectively and improve daily.
+</textarea>
+
+<div class="controls">
+    <button onclick="startReading()">▶ System Read</button>
+    <button onclick="pauseReading()">⏸ Pause</button>
+    <button onclick="stopReading()">⏹ Stop</button>
+
+    <select id="voiceSelect"></select>
+
+    <select onchange="changeSpeed(this.value)">
+        <option value="0.7">Slow</option>
+        <option value="1" selected>Normal</option>
+        <option value="1.4">Fast</option>
+    </select>
+
+    <button class="practice-btn" onclick="startUserReading()">🎤 Start Practice</button>
+    <button class="stop-btn" onclick="stopUserReading()">🛑 Stop Practice</button>
+</div>
+
+<div class="wave">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+</div>
+
+<div class="progress-container">
+    <div class="progress" id="progressBar"></div>
+</div>
+
+<div class="reading-stats">
+    <div>
+        <h3 id="correctWords">0</h3>
+        <p>Correct Words</p>
+    </div>
+    <div>
+        <h3 id="remainingWords">0</h3>
+        <p>Remaining Words</p>
+    </div>
+    <div>
+        <h3 id="accuracy">0%</h3>
+        <p>Accuracy</p>
+    </div>
+</div>
+
+</div>
+</div>
+
+<script>
+
+let speech;
+let speed=1;
+let recognition;
+
+const textInput=document.getElementById("textInput");
+const progressBar=document.getElementById("progressBar");
+const voiceSelect=document.getElementById("voiceSelect");
+
+/* VOICE POPULATION */
+function populateVoices(){
+    const voices=window.speechSynthesis.getVoices();
+    voiceSelect.innerHTML="";
+    voices.forEach((voice,i)=>{
+        const option=document.createElement("option");
+        option.value=i;
+        option.textContent=voice.name;
+        voiceSelect.appendChild(option);
+    });
+}
+window.speechSynthesis.onvoiceschanged=populateVoices;
+
+/* SYSTEM READ */
+function startReading(){
+    const text=textInput.value;
+    speech=new SpeechSynthesisUtterance(text);
+    speech.rate=speed;
+
+    const voices=window.speechSynthesis.getVoices();
+    speech.voice=voices[voiceSelect.value];
+
+    speech.onboundary=function(event){
+        let progress=(event.charIndex/text.length)*100;
+        progressBar.style.width=progress+"%";
+    };
+
+    window.speechSynthesis.speak(speech);
+}
+
+function pauseReading(){ window.speechSynthesis.pause(); }
+function stopReading(){ window.speechSynthesis.cancel(); progressBar.style.width="0%"; }
+function changeSpeed(value){ speed=parseFloat(value); }
+
+/* PRACTICE MODE */
+
+let originalWords=[];
+let spokenWords=[];
+let correctCount=0;
+
+function startUserReading(){
+
+    const text=textInput.value.toLowerCase().replace(/[.,]/g,"");
+    originalWords=text.split(" ");
+    spokenWords=[];
+    correctCount=0;
+
+    document.getElementById("remainingWords").innerText=originalWords.length;
+
+    const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+    recognition=new SpeechRecognition();
+    recognition.continuous=true;
+    recognition.interimResults=false;
+    recognition.lang="en-US";
+
+    recognition.onresult=function(event){
+        let transcript=event.results[event.results.length-1][0].transcript
+                        .toLowerCase()
+                        .replace(/[.,]/g,"");
+
+        let wordsNow=transcript.split(" ");
+        wordsNow.forEach(word=>spokenWords.push(word));
+
+        compareWords();
+    };
+
+    recognition.start();
+}
+
+function compareWords(){
+    correctCount=0;
+
+    for(let i=0;i<spokenWords.length;i++){
+        if(spokenWords[i]===originalWords[i]){
+            correctCount++;
+        }
+    }
+
+    let remaining=originalWords.length-spokenWords.length;
+    if(remaining<0) remaining=0;
+
+    let accuracy=((correctCount/originalWords.length)*100).toFixed(1);
+
+    document.getElementById("correctWords").innerText=correctCount;
+    document.getElementById("remainingWords").innerText=remaining;
+    document.getElementById("accuracy").innerText=accuracy+"%";
+}
+
+function stopUserReading(){
+    if(recognition){ recognition.stop(); }
+}
+
+</script>
+
+</body>
+</html>

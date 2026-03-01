@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEMRSC - Home</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#0f172a;
+    color:#ccc;
+    overflow:hidden;
+}
+
+/* CANVAS */
+#hexCanvas, #particleCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+#hexCanvas{z-index:0;}
+#particleCanvas{z-index:1;}
+
+.content{
+    position:relative;
+    z-index:10;
+}
+
+/* SECTION */
+section{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+/* TITLE */
+h1{
+    font-family:'Orbitron',sans-serif;
+    font-size:36px;
+    color:#00f7ff;
+    text-shadow:0 0 10px #00f7ff;
+}
+
+p{
+    margin-top:10px;
+}
+
+/* COUNTDOWN */
+.countdown{
+    display:flex;
+    gap:20px;
+    margin-top:30px;
+}
+
+.time-box{
+    padding:20px;
+    border-radius:14px;
+    min-width:90px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(0,247,255,0.3);
+
+    transition:0.3s;
+}
+
+.time-box:hover{
+    transform:translateY(-6px);
+    box-shadow:0 0 20px #00f7ff;
+}
+#navbar{
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:1000;
+}
+
+/* PUSH CONTENT DOWN */
+section{
+    padding-top:120px;
+}
+/* ORGANIZATION SECTION */
+.org-section{
+    margin-top:60px;
+}
+
+.org-heading{
+    font-family:'Orbitron',sans-serif;
+    color:#00f7ff;
+    margin-bottom:25px;
+    text-shadow:0 0 10px #00f7ff;
+}
+
+.org-container{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    flex-wrap:wrap;
+}
+
+.org-card{
+    width:180px;
+    padding:20px;
+    border-radius:14px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(0,247,255,0.3);
+
+    transition:0.3s;
+}
+
+.org-card:hover{
+    transform:translateY(-10px) scale(1.05);
+    box-shadow:0 0 25px #00f7ff;
+}
+
+.org-card img{
+    width:100%;
+    height:80px;
+    object-fit:contain;
+    margin-bottom:10px;
+    filter:drop-shadow(0 0 6px #00f7ff);
+}
+</style>
+</head>
+
+<body>
+    <div id="navbar"></div>
+
+<canvas id="hexCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+
+<div class="content">
+
+<section>
+    <h1>Research Scholar Conclave 2026</h1>
+    <p>1 August 2026</p>
+
+    <!-- COUNTDOWN -->
+    <div class="countdown">
+        <div class="time-box"><span id="days">0</span><br>Days</div>
+        <div class="time-box"><span id="hours">0</span><br>Hours</div>
+        <div class="time-box"><span id="minutes">0</span><br>Minutes</div>
+        <div class="time-box"><span id="seconds">0</span><br>Seconds</div>
+    </div>
+
+    <!-- ORGANIZATIONS -->
+    <div class="org-section">
+        <h2 class="org-heading">Organizing Institutions</h2>
+
+        <div class="org-container">
+            <div class="org-card">
+                <img src="iem_new_logo.png">
+                <p>IEM Kolkata</p>
+            </div>
+
+            <div class="org-card">
+                <img src="aph.png">
+                <p>APH</p>
+            </div>
+
+            <div class="org-card">
+                <img src="logo_IEMRSC.png">
+                <p>IEMRSC</p>
+            </div>
+
+            <div class="org-card">
+                <img src="uem_logo_rsc.png">
+                <p>UEM</p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+</div>
+
+<script>
+// COUNTDOWN
+const eventDate = new Date("August 1, 2026").getTime();
+
+setInterval(()=>{
+    let now = new Date().getTime();
+    let d = eventDate - now;
+
+    if(d>0){
+        document.getElementById("days").innerHTML=Math.floor(d/(1000*60*60*24));
+        document.getElementById("hours").innerHTML=Math.floor((d%(1000*60*60*24))/(1000*60*60));
+        document.getElementById("minutes").innerHTML=Math.floor((d%(1000*60*60))/(1000*60));
+        document.getElementById("seconds").innerHTML=Math.floor((d%(1000*60))/1000);
+    }
+},1000);
+
+//////////////// HEX //////////////////
+const canvas = document.getElementById("hexCanvas");
+const ctx = canvas.getContext("2d");
+
+let grid=[];
+const HEX_SIZE=35;
+
+function resize(){
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+    generateGrid();
+}
+window.addEventListener("resize",resize);
+
+function generateGrid(){
+    grid=[];
+    const w=Math.sqrt(3)*HEX_SIZE;
+    const h=2*HEX_SIZE;
+
+    for(let r=0;r<30;r++){
+        for(let c=0;c<30;c++){
+            const offset=(r%2===0)?0:w/2;
+            grid.push({x:c*w+offset,y:r*(h*0.75),intensity:Math.random()*0.3});
+        }
+    }
+}
+
+function drawHex(x,y,size,intensity){
+    ctx.beginPath();
+    for(let i=0;i<6;i++){
+        const a=Math.PI/3*i;
+        const px=x+size*Math.cos(a);
+        const py=y+size*Math.sin(a);
+        i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+    }
+    ctx.closePath();
+    ctx.strokeStyle=`rgba(16,185,129,${intensity})`;
+    ctx.stroke();
+}
+
+function animateHex(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    grid.forEach(h=>{
+        h.intensity+=(Math.random()-0.5)*0.02;
+        h.intensity=Math.max(0.05,Math.min(0.3,h.intensity));
+        drawHex(h.x,h.y,HEX_SIZE,h.intensity);
+    });
+    requestAnimationFrame(animateHex);
+}
+
+//////////////// PARTICLES //////////////////
+const pCanvas=document.getElementById("particleCanvas");
+const pCtx=pCanvas.getContext("2d");
+
+let particles=[];
+for(let i=0;i<120;i++){
+    particles.push({
+        x:Math.random()*window.innerWidth,
+        y:Math.random()*window.innerHeight,
+        size:Math.random()*2,
+        speed:Math.random()*1+0.5
+    });
+}
+
+function animateParticles(){
+    pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+    pCtx.fillStyle="white";
+
+    particles.forEach(p=>{
+        pCtx.beginPath();
+        pCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        pCtx.fill();
+
+        p.y+=p.speed;
+
+        if(p.y>window.innerHeight){
+            p.y=0;
+            p.x=Math.random()*window.innerWidth;
+        }
+    });
+
+    requestAnimationFrame(animateParticles);
+}
+
+resize();
+pCanvas.width=window.innerWidth;
+pCanvas.height=window.innerHeight;
+
+generateGrid();
+animateHex();
+animateParticles();
+</script>
+<script>
+fetch("navbar.html")
+.then(res => res.text())
+.then(data => {
+    document.getElementById("navbar").innerHTML = data;
+});
+</script>
+
+</body>
+</html>

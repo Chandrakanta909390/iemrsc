@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEMRSC - Publication</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#0f172a;
+    color:white;
+    overflow:hidden;
+}
+
+/* CANVAS */
+#hexCanvas, #particleCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+#hexCanvas{z-index:0;}
+#particleCanvas{z-index:1;}
+
+/* NAVBAR FIX */
+#navbar{
+    position:fixed;
+    width:100%;
+    top:0;
+    z-index:1000;
+}
+
+/* REMOVE BULLETS */
+nav ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+nav li{
+    list-style:none;
+}
+
+/* CONTENT */
+.content{
+    position:relative;
+    z-index:10;
+}
+
+/* SECTION */
+section{
+    padding:140px 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    min-height:100vh;
+}
+
+/* BOX */
+.box{
+    max-width:700px;
+    padding:30px;
+    border-radius:16px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(0,247,255,0.3);
+
+    box-shadow:0 0 25px rgba(0,247,255,0.2);
+}
+
+/* TITLE */
+h1{
+    font-family:'Orbitron',sans-serif;
+    color:#00f7ff;
+    margin-bottom:20px;
+    text-shadow:0 0 10px #00f7ff;
+}
+
+/* TEXT */
+p{
+    color:#ccc;
+    line-height:1.7;
+}
+
+/* LINK BOX */
+.pub-link{
+    display:inline-block;
+    margin-top:25px;
+    padding:20px;
+    border-radius:12px;
+
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(0,247,255,0.3);
+
+    transition:0.3s;
+}
+
+.pub-link:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 25px #00f7ff;
+}
+
+/* LOGO */
+.pub-link img{
+    width:150px;
+    filter:drop-shadow(0 0 10px #00f7ff);
+}
+
+.pub-text{
+    margin-top:10px;
+    color:#00f7ff;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div id="navbar"></div>
+
+<!-- BACKGROUND -->
+<canvas id="hexCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+
+<div class="content">
+
+<section>
+
+<div class="box">
+
+<h1>Publication</h1>
+
+<p>
+All selected extended abstracts will be published as book chapters with proper ISBN number under 
+<b>Aryan Publishing House</b>.
+</p>
+
+<a href="https://www.aryanpublishinghouse.com/" target="_blank" class="pub-link">
+    <img src="aph.png">
+    <div class="pub-text">Visit Official Website</div>
+</a>
+
+</div>
+
+</section>
+
+</div>
+
+<script>
+/* LOAD NAVBAR */
+fetch("navbar.html")
+.then(res => res.text())
+.then(data => {
+    document.getElementById("navbar").innerHTML = data;
+});
+
+//////////////// HEX //////////////////
+const canvas=document.getElementById("hexCanvas");
+const ctx=canvas.getContext("2d");
+
+//////////////// PARTICLES //////////////////
+const pCanvas=document.getElementById("particleCanvas");
+const pCtx=pCanvas.getContext("2d");
+
+let grid=[];
+let particles=[];
+const HEX_SIZE=35;
+
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    pCanvas.width = window.innerWidth;
+    pCanvas.height = window.innerHeight;
+
+    generateGrid();
+}
+window.addEventListener("resize",resize);
+
+function generateGrid(){
+    grid=[];
+    const w=Math.sqrt(3)*HEX_SIZE;
+    const h=2*HEX_SIZE;
+
+    for(let r=0;r<30;r++){
+        for(let c=0;c<30;c++){
+            const offset=(r%2===0)?0:w/2;
+            grid.push({
+                x:c*w+offset,
+                y:r*(h*0.75),
+                intensity:Math.random()*0.3
+            });
+        }
+    }
+}
+
+function drawHex(x,y,size,intensity){
+    ctx.beginPath();
+    for(let i=0;i<6;i++){
+        const a=Math.PI/3*i;
+        const px=x+size*Math.cos(a);
+        const py=y+size*Math.sin(a);
+        i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+    }
+    ctx.closePath();
+    ctx.strokeStyle=`rgba(16,185,129,${intensity})`;
+    ctx.stroke();
+}
+
+function animateHex(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    grid.forEach(hex=>{
+        hex.intensity+=(Math.random()-0.5)*0.02;
+        hex.intensity=Math.max(0.05,Math.min(0.3,hex.intensity));
+        drawHex(hex.x,hex.y,HEX_SIZE,hex.intensity);
+    });
+
+    requestAnimationFrame(animateHex);
+}
+
+function initParticles(){
+    particles=[];
+    for(let i=0;i<120;i++){
+        particles.push({
+            x:Math.random()*window.innerWidth,
+            y:Math.random()*window.innerHeight,
+            size:Math.random()*2,
+            speed:Math.random()*1+0.3
+        });
+    }
+}
+
+function animateParticles(){
+    pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+    pCtx.fillStyle="rgba(255,255,255,0.6)";
+
+    particles.forEach(p=>{
+        pCtx.beginPath();
+        pCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        pCtx.fill();
+
+        p.y += p.speed;
+
+        if(p.y > pCanvas.height){
+            p.y = 0;
+            p.x = Math.random()*pCanvas.width;
+        }
+    });
+
+    requestAnimationFrame(animateParticles);
+}
+
+resize();
+initParticles();
+animateHex();
+animateParticles();
+</script>
+
+</body>
+</html>

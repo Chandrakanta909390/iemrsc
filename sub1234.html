@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEMRSC - Submission</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#020617;
+    color:white;
+    overflow:hidden;
+}
+
+/* CANVAS */
+#hexCanvas,#particleCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+#hexCanvas{z-index:0;}
+#particleCanvas{z-index:1;}
+#navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:9999;
+}
+
+/* REMOVE BULLETS */
+#navbar ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+#navbar li{
+    list-style:none;
+}
+/* MAIN */
+.container{
+    position:relative;
+    z-index:10;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+/* BOX */
+.box{
+    width:100%;
+    max-width:750px;
+    padding:35px;
+    border-radius:20px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(0,247,255,0.3);
+    box-shadow:0 0 40px rgba(0,247,255,0.2);
+}
+
+/* TITLE */
+h1{
+    text-align:center;
+    font-family:'Orbitron',sans-serif;
+    color:#c084fc;
+    margin-bottom:25px;
+    text-shadow:0 0 15px #c084fc;
+}
+
+/* LIST */
+ul{
+    margin-bottom:20px;
+}
+
+li{
+    margin:10px 0;
+    color:#d1d5db;
+}
+
+/* SUB TITLES */
+.sub{
+    color:#c084fc;
+    font-weight:600;
+    margin-top:20px;
+}
+
+/* TEXT */
+p{
+    margin-top:10px;
+    color:#9ca3af;
+}
+
+/* FILE BOX */
+.file-box{
+    margin-top:25px;
+    padding:20px;
+    border-radius:12px;
+
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(0,247,255,0.2);
+}
+
+/* BUTTONS */
+.btn{
+    padding:10px 20px;
+    border-radius:8px;
+    text-decoration:none;
+    display:inline-block;
+    margin-top:10px;
+    margin-right:10px;
+    transition:0.3s;
+}
+
+.download{
+    background:#9333ea;
+    color:white;
+}
+
+.download:hover{
+    box-shadow:0 0 15px #9333ea;
+}
+
+.preview{
+    border:1px solid #00f7ff;
+    color:#00f7ff;
+}
+
+.preview:hover{
+    background:#00f7ff;
+    color:black;
+}
+
+/* SUBMIT BUTTON */
+.submit{
+    margin-top:25px;
+    background:#9333ea;
+    color:white;
+}
+
+.submit:hover{
+    box-shadow:0 0 20px #9333ea;
+}
+</style>
+</head>
+
+<body>
+<div id="navbar"></div>
+<canvas id="hexCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+
+<div class="container">
+
+<div class="box">
+
+<h1>Abstract Submission Guidelines</h1>
+
+<ul>
+<li>Abstract should be prepared in Microsoft Word.</li>
+<li>Please download the abstract template from the website.</li>
+<li>Abstracts must be prepared in English.</li>
+<li>Abstracts should not exceed 250 words (Text only).</li>
+<li>Maximum one figure and two references are allowed.</li>
+</ul>
+
+<div class="sub">Note:</div>
+
+<p>Full length papers submission is optional.</p>
+<p>Ensure your email and phone number are correct.</p>
+<p>Abstracts can be submitted for <b>Oral</b> or <b>Poster</b>.</p>
+
+<div class="sub">Preparation of Abstracts</div>
+
+<p>Follow the template strictly.</p>
+
+<div class="file-box">
+<p>📄 Abstract Template</p>
+
+<a href="submission.pdf" download class="btn download">Download</a>
+<a href="submission.pdf" target="_blank" class="btn preview">Preview</a>
+</div>
+
+<a href="https://cmt3.research.microsoft.com/" target="_blank" class="btn submit">
+Submit Abstract
+</a>
+
+</div>
+
+</div>
+
+<script>
+const hexCanvas=document.getElementById("hexCanvas");
+const hexCtx=hexCanvas.getContext("2d");
+
+const pCanvas=document.getElementById("particleCanvas");
+const pCtx=pCanvas.getContext("2d");
+
+let grid=[],particles=[];
+const HEX_SIZE=35;
+
+function resize(){
+    hexCanvas.width=window.innerWidth;
+    hexCanvas.height=window.innerHeight;
+    pCanvas.width=window.innerWidth;
+    pCanvas.height=window.innerHeight;
+    generateGrid();
+}
+window.addEventListener("resize",resize);
+
+function generateGrid(){
+    grid=[];
+    const w=Math.sqrt(3)*HEX_SIZE;
+    const h=2*HEX_SIZE;
+
+    for(let r=0;r<30;r++){
+        for(let c=0;c<30;c++){
+            const offset=(r%2===0)?0:w/2;
+            grid.push({x:c*w+offset,y:r*(h*0.75),intensity:Math.random()*0.3});
+        }
+    }
+}
+
+function drawHex(x,y,size,intensity){
+    hexCtx.beginPath();
+    for(let i=0;i<6;i++){
+        const a=Math.PI/3*i;
+        const px=x+size*Math.cos(a);
+        const py=y+size*Math.sin(a);
+        i===0?hexCtx.moveTo(px,py):hexCtx.lineTo(px,py);
+    }
+    hexCtx.closePath();
+    hexCtx.strokeStyle=`rgba(0,247,255,${intensity})`;
+    hexCtx.stroke();
+}
+
+function animateHex(){
+    hexCtx.clearRect(0,0,hexCanvas.width,hexCanvas.height);
+    grid.forEach(h=>{
+        h.intensity+=(Math.random()-0.5)*0.02;
+        h.intensity=Math.max(0.05,Math.min(0.3,h.intensity));
+        drawHex(h.x,h.y,HEX_SIZE,h.intensity);
+    });
+    requestAnimationFrame(animateHex);
+}
+
+function initParticles(){
+    for(let i=0;i<120;i++){
+        particles.push({
+            x:Math.random()*window.innerWidth,
+            y:Math.random()*window.innerHeight,
+            size:Math.random()*2,
+            speed:Math.random()*1+0.3
+        });
+    }
+}
+
+function animateParticles(){
+    pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+    pCtx.fillStyle="rgba(255,255,255,0.6)";
+    particles.forEach(p=>{
+        pCtx.beginPath();
+        pCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        pCtx.fill();
+        p.y+=p.speed;
+        if(p.y>pCanvas.height){
+            p.y=0;
+            p.x=Math.random()*pCanvas.width;
+        }
+    });
+    requestAnimationFrame(animateParticles);
+}
+
+resize();
+initParticles();
+animateHex();
+animateParticles();
+</script>
+<script>
+fetch("navbar.html")
+.then(res => res.text())
+.then(data => {
+    document.getElementById("navbar").innerHTML = data;
+});
+
+</script>
+
+</body>
+</html>

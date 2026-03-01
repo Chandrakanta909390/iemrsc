@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEMRSC - Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#0f172a;
+    color:white;
+    overflow:hidden;
+}
+
+/* HEX CANVAS */
+#hexCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:0;
+    pointer-events:none;
+}
+
+/* CONTENT */
+.container{
+    position:relative;
+    z-index:10;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+/* HEADING */
+.title{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.title h1{
+    font-family:'Orbitron',sans-serif;
+    font-size:32px;
+}
+
+.title p{
+    font-size:14px;
+    opacity:0.7;
+}
+
+/* BOX */
+.box{
+    width:350px;
+    padding:30px;
+    border-radius:16px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(0,247,255,0.3);
+    box-shadow:0 0 20px rgba(0,247,255,0.2);
+
+    text-align:center;
+}
+
+/* INPUT */
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:none;
+    border-radius:8px;
+    background:rgba(255,255,255,0.08);
+    color:white;
+}
+
+input:focus{
+    outline:none;
+    border:1px solid #00f7ff;
+    box-shadow:0 0 10px #00f7ff;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    background:#00f7ff;
+    color:black;
+    cursor:pointer;
+}
+
+button:hover{
+    box-shadow:0 0 20px #00f7ff;
+}
+
+/* TOGGLE */
+.toggle{
+    margin-top:15px;
+    font-size:14px;
+}
+
+.toggle span{
+    color:#00f7ff;
+    cursor:pointer;
+}
+
+/* ERROR */
+.error{
+    color:red;
+    font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="hexCanvas"></canvas>
+
+<div class="container">
+
+    <div class="title">
+        <h1>IEMRSC</h1>
+        <p>Research Scholar Conclave</p>
+    </div>
+
+    <div class="box">
+
+        <!-- LOGIN -->
+        <div id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <button onclick="login()">Login</button>
+            <div class="toggle">
+                Don't have an account? <span onclick="showSignup()">Sign Up</span>
+            </div>
+        </div>
+
+        <!-- SIGNUP -->
+        <div id="signupForm" style="display:none;">
+            <input type="email" id="signupEmail" placeholder="Email">
+            <input type="password" id="signupPassword" placeholder="Password">
+            <input type="password" id="confirmPassword" placeholder="Confirm Password">
+            <div id="errorMsg" class="error"></div>
+            <button onclick="signup()">Register</button>
+            <div class="toggle">
+                Already have an account? <span onclick="showLogin()">Sign In</span>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+// TOGGLE
+function showSignup(){
+    loginForm.style.display="none";
+    signupForm.style.display="block";
+}
+function showLogin(){
+    signupForm.style.display="none";
+    loginForm.style.display="block";
+}
+
+// SIGNUP
+function signup(){
+    let email=signupEmail.value;
+    let pass=signupPassword.value;
+    let confirm=confirmPassword.value;
+
+    if(pass!==confirm){
+        errorMsg.innerText="Passwords do not match!";
+        return;
+    }
+
+    localStorage.setItem("userEmail",email);
+    localStorage.setItem("userPassword",pass);
+
+    alert("Registered Successfully!");
+    showLogin();
+}
+localStorage.clear();
+
+// LOGIN
+function login(){
+    let email = loginEmail.value;
+    let pass = loginPassword.value;
+
+    if(email === localStorage.getItem("userEmail") &&
+       pass === localStorage.getItem("userPassword")){
+
+        // ✅ THIS LINE FIXES EVERYTHING
+        localStorage.setItem("isLoggedIn", "true");
+
+        // redirect to home
+        window.location.href = "index.html";
+
+    } else {
+        alert("Invalid Credentials!");
+    }
+}
+
+////////////////////////
+// HEX EFFECT
+////////////////////////
+const canvas=document.getElementById("hexCanvas");
+const ctx=canvas.getContext("2d");
+
+let w,h,grid=[];
+const size=35;
+let mouse={x:0,y:0};
+
+function resize(){
+    w=canvas.width=window.innerWidth;
+    h=canvas.height=window.innerHeight;
+    generate();
+}
+window.addEventListener("resize",resize);
+
+window.addEventListener("mousemove",e=>{
+    mouse.x=e.clientX;
+    mouse.y=e.clientY;
+});
+
+function generate(){
+    grid=[];
+    let hexW=Math.sqrt(3)*size;
+    let hexH=2*size;
+
+    let rows=Math.ceil(h/(hexH*0.75))+5;
+    let cols=Math.ceil(w/hexW)+5;
+
+    for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+            let offset=(r%2===0)?0:hexW/2;
+            grid.push({x:c*hexW+offset,y:r*(hexH*0.75),i:0});
+        }
+    }
+}
+
+function draw(x,y,s,i){
+    ctx.beginPath();
+    for(let k=0;k<6;k++){
+        let a=Math.PI/3*k;
+        let px=x+s*Math.cos(a);
+        let py=y+s*Math.sin(a);
+        k===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+    }
+    ctx.closePath();
+
+    ctx.strokeStyle=i>0?`rgba(16,185,129,${i})`:"rgba(255,255,255,0.05)";
+    ctx.stroke();
+}
+
+function animate(){
+    ctx.clearRect(0,0,w,h);
+
+    grid.forEach(hx=>{
+        let dx=hx.x-mouse.x;
+        let dy=hx.y-mouse.y;
+        let d=Math.sqrt(dx*dx+dy*dy);
+
+        if(d<120) hx.i=1-(d/120);
+        hx.i*=0.94;
+
+        draw(hx.x,hx.y,size,hx.i);
+    });
+
+    requestAnimationFrame(animate);
+}
+
+resize();
+animate();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEMRSC - Committee</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#0f172a;
+    color:white;
+    overflow:hidden; /* for animation */
+}
+
+/* CANVAS */
+#hexCanvas, #particleCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+#hexCanvas{ z-index:0; }
+#particleCanvas{ z-index:1; }
+
+/* NAVBAR */
+#navbar{
+    position:fixed;
+    width:100%;
+    top:0;
+    z-index:1000;
+}
+
+/* SECTION */
+section{
+    position:relative;
+    z-index:10;
+    padding:140px 20px 60px;
+    display:flex;
+    justify-content:center;
+}
+
+/* TITLE */
+h1{
+    font-family:'Orbitron',sans-serif;
+    color:#00f7ff;
+    text-align:center;
+    margin-bottom:30px;
+    text-shadow:0 0 10px #00f7ff;
+}
+
+/* TABLE */
+.table-container{
+    width:100%;
+    max-width:900px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    text-align:center;
+    background:rgba(168,85,247,0.2);
+    backdrop-filter:blur(10px);
+    border-radius:12px;
+    overflow:hidden;
+}
+
+td{
+    padding:18px;
+    border:1px solid rgba(255,255,255,0.2);
+}
+
+tr:hover{
+    background:rgba(168,85,247,0.4);
+}
+
+/* REMOVE NAV BULLETS */
+nav ul, nav li{
+    list-style:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div id="navbar"></div>
+
+<!-- BACKGROUND -->
+<canvas id="hexCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+
+<section>
+<div>
+
+<h1>Organizing Committee</h1>
+
+<div class="table-container">
+
+<table>
+<tr>
+<td>Prof. Dr. Satyajit Chakrabarti</td>
+<td>Chief Patron</td>
+<td>Director, IEM, Kolkata</td>
+</tr>
+
+<tr>
+<td>Prof. Dr. Arun Kumar Bar</td>
+<td>Patron</td>
+<td>Principal, IEM, Kolkata</td>
+</tr>
+
+<tr>
+<td>Prof. Prabir Kumar Das</td>
+<td>Chair</td>
+<td>Head, Dept. of BSH, IEM, Kolkata</td>
+</tr>
+
+<tr>
+<td>Prof. Dr. Samapika Das Biswas</td>
+<td>Co-chair</td>
+<td>IEM, Kolkata</td>
+</tr>
+
+<tr>
+<td>Prof. Dr. Soumyadipta Pal</td>
+<td>Convener</td>
+<td>IEM, Kolkata</td>
+</tr>
+
+<tr>
+<td>Prof. Dr. Dibyasree Choudhury</td>
+<td>Convener</td>
+<td>IEM, Kolkata</td>
+</tr>
+
+<tr>
+<td>Prof. Dr. Soumyabrata Goswami</td>
+<td>Convener</td>
+<td>IEM, Kolkata</td>
+</tr>
+
+<tr>
+<td>Prof. Dr. Sudip Jana</td>
+<td>Convener</td>
+<td>IEM, Kolkata</td>
+</tr>
+</table>
+
+</div>
+
+</div>
+</section>
+
+<script>
+/* NAVBAR LOAD */
+fetch("navbar.html")
+.then(res => res.text())
+.then(data => {
+    document.getElementById("navbar").innerHTML = data;
+});
+
+/* NAVIGATION */
+function goPage(page){
+    window.location.href = page;
+}
+
+//////////////// HEX GRID //////////////////
+const hexCanvas=document.getElementById("hexCanvas");
+const hexCtx=hexCanvas.getContext("2d");
+
+let grid=[];
+const HEX_SIZE=35;
+
+function resize(){
+    hexCanvas.width=window.innerWidth;
+    hexCanvas.height=window.innerHeight;
+    particleCanvas.width=window.innerWidth;
+    particleCanvas.height=window.innerHeight;
+    generateGrid();
+}
+window.addEventListener("resize",resize);
+
+function generateGrid(){
+    grid=[];
+    const w=Math.sqrt(3)*HEX_SIZE;
+    const h=2*HEX_SIZE;
+
+    const rows=Math.ceil(window.innerHeight/(h*0.75))+5;
+    const cols=Math.ceil(window.innerWidth/w)+5;
+
+    for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+            const offset=(r%2===0)?0:w/2;
+            grid.push({
+                x:c*w+offset,
+                y:r*(h*0.75),
+                intensity:Math.random()*0.3
+            });
+        }
+    }
+}
+
+function drawHex(x,y,size,intensity){
+    hexCtx.beginPath();
+    for(let i=0;i<6;i++){
+        const a=Math.PI/3*i;
+        const px=x+size*Math.cos(a);
+        const py=y+size*Math.sin(a);
+        i===0?hexCtx.moveTo(px,py):hexCtx.lineTo(px,py);
+    }
+    hexCtx.closePath();
+    hexCtx.strokeStyle=`rgba(16,185,129,${intensity})`;
+    hexCtx.stroke();
+}
+
+function animateHex(){
+    hexCtx.clearRect(0,0,hexCanvas.width,hexCanvas.height);
+
+    grid.forEach(hex=>{
+        hex.intensity+=(Math.random()-0.5)*0.02;
+        hex.intensity=Math.max(0.05,Math.min(0.3,hex.intensity));
+        drawHex(hex.x,hex.y,HEX_SIZE,hex.intensity);
+    });
+
+    requestAnimationFrame(animateHex);
+}
+
+//////////////// PARTICLES //////////////////
+const particleCanvas=document.getElementById("particleCanvas");
+const pCtx=particleCanvas.getContext("2d");
+
+let particles=[];
+for(let i=0;i<120;i++){
+    particles.push({
+        x:Math.random()*window.innerWidth,
+        y:Math.random()*window.innerHeight,
+        size:Math.random()*2,
+        speed:Math.random()*1+0.3
+    });
+}
+
+function animateParticles(){
+    pCtx.clearRect(0,0,particleCanvas.width,particleCanvas.height);
+    pCtx.fillStyle="rgba(255,255,255,0.6)";
+
+    particles.forEach(p=>{
+        pCtx.beginPath();
+        pCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        pCtx.fill();
+
+        p.y+=p.speed;
+        if(p.y>window.innerHeight){
+            p.y=0;
+            p.x=Math.random()*window.innerWidth;
+        }
+    });
+
+    requestAnimationFrame(animateParticles);
+}
+
+resize();
+animateHex();
+animateParticles();
+</script>
+
+</body>
+</html>

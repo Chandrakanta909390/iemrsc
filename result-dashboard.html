@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedarthi | Performance Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    display:flex;
+    background:#f4f7ff;
+    height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:250px;
+    background:linear-gradient(180deg,#667eea,#764ba2);
+    color:#fff;
+    padding:30px 20px;
+}
+
+.sidebar h2{
+    margin-bottom:40px;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    margin:20px 0;
+    cursor:pointer;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:40px;
+    overflow-y:auto;
+}
+
+/* CARDS GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+    margin-top:30px;
+}
+
+.card{
+    background:#fff;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.08);
+}
+
+/* CIRCLE PROGRESS */
+.circle-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.circle{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    background:conic-gradient(#667eea 0%, #eee 0%);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:28px;
+    font-weight:700;
+}
+
+/* BARS */
+.progress-bar{
+    background:#eee;
+    height:10px;
+    border-radius:10px;
+    margin-top:10px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#667eea,#764ba2);
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+table th, table td{
+    padding:12px;
+    text-align:left;
+    border-bottom:1px solid #ddd;
+}
+
+table th{
+    background:#f4f7ff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Vedarthi</h2>
+    <ul>
+        <li>Dashboard</li>
+        <li>Smart Voice Reader</li>
+        <li><strong>Results</strong></li>
+        <li>Consultancy</li>
+        <li>Premium</li>
+    </ul>
+</div>
+
+<div class="main">
+
+<h1>Performance Dashboard</h1>
+<p>Detailed reading analysis and performance insights</p>
+
+<div class="grid">
+
+<div class="card">
+    <h3>Overall Accuracy</h3>
+    <div class="circle-container">
+        <div class="circle" id="accuracyCircle">0%</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Correct Words</h3>
+    <h2 id="correctWords">0</h2>
+</div>
+
+<div class="card">
+    <h3>Remaining Words</h3>
+    <h2 id="remainingWords">0</h2>
+</div>
+
+<div class="card">
+    <h3>Confidence Score</h3>
+    <h2 id="confidenceScore">0%</h2>
+</div>
+
+</div>
+
+<div class="card" style="margin-top:30px;">
+<h3>Skill Breakdown</h3>
+
+<p>Pronunciation</p>
+<div class="progress-bar">
+    <div class="progress-fill" id="pronunciationBar"></div>
+</div>
+
+<p style="margin-top:15px;">Fluency</p>
+<div class="progress-bar">
+    <div class="progress-fill" id="fluencyBar"></div>
+</div>
+
+<p style="margin-top:15px;">Consistency</p>
+<div class="progress-bar">
+    <div class="progress-fill" id="consistencyBar"></div>
+</div>
+
+</div>
+
+<div class="card" style="margin-top:30px;">
+<h3>Session History</h3>
+
+<table>
+<tr>
+<th>Date</th>
+<th>Accuracy</th>
+<th>Duration</th>
+<th>Performance</th>
+</tr>
+<tr>
+<td>Today</td>
+<td>82%</td>
+<td>3 min</td>
+<td>Good</td>
+</tr>
+<tr>
+<td>Yesterday</td>
+<td>74%</td>
+<td>4 min</td>
+<td>Average</td>
+</tr>
+<tr>
+<td>2 Days Ago</td>
+<td>68%</td>
+<td>5 min</td>
+<td>Improving</td>
+</tr>
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+/* DEMO DATA (Later connect to real data) */
+
+let accuracy = 82;
+let correct = 23;
+let remaining = 5;
+
+document.getElementById("accuracyCircle").innerText = accuracy + "%";
+document.getElementById("correctWords").innerText = correct;
+document.getElementById("remainingWords").innerText = remaining;
+document.getElementById("confidenceScore").innerText = accuracy + "%";
+
+/* Circle Progress */
+document.getElementById("accuracyCircle").style.background =
+    `conic-gradient(#667eea ${accuracy}%, #eee ${accuracy}%)`;
+
+/* Skill Bars */
+document.getElementById("pronunciationBar").style.width = accuracy + "%";
+document.getElementById("fluencyBar").style.width = (accuracy - 5) + "%";
+document.getElementById("consistencyBar").style.width = (accuracy - 10) + "%";
+
+</script>
+
+</body>
+</html>

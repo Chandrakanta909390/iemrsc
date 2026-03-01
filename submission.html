@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEMRSC - Submission</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#0f172a;
+    color:white;
+    overflow:hidden;
+}
+
+/* CANVAS */
+#hexCanvas, #particleCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+#hexCanvas{ z-index:0; }
+#particleCanvas{ z-index:1; }
+
+/* NAVBAR */
+.navbar{
+    position:fixed;
+    width:100%;
+    top:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(12px);
+    z-index:1000;
+}
+
+.nav-links{
+    display:flex;
+    gap:30px;
+    list-style:none;
+}
+
+.nav-links li{
+    list-style:none;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:white;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:#00f7ff;
+    text-shadow:0 0 10px #00f7ff;
+}
+
+/* SECTION */
+section{
+    position:relative;
+    z-index:10;
+    padding:140px 20px;
+    display:flex;
+    justify-content:center;
+}
+
+/* CONTAINER */
+.container{
+    max-width:900px;
+    width:100%;
+}
+
+/* TITLE */
+h1{
+    font-family:'Orbitron',sans-serif;
+    color:#a855f7;
+    margin-bottom:20px;
+    text-shadow:0 0 10px #a855f7;
+}
+
+/* BOX */
+.box{
+    padding:25px;
+    border-radius:14px;
+    margin-top:20px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(0,247,255,0.3);
+    box-shadow:0 0 20px rgba(0,247,255,0.2);
+}
+
+/* LIST (ONLY CONTENT) */
+.box ul{ margin-top:15px; }
+
+.box li{
+    margin:10px 0;
+    list-style:disc;
+    margin-left:20px;
+}
+.navbar{
+    position:fixed;
+    width:100%;
+    top:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(12px);
+    z-index:1000;
+}
+
+.logo{
+    font-family:'Orbitron',sans-serif;
+    font-size:18px;
+}
+
+.nav-links{
+    display:flex;
+    gap:30px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:white;
+}
+
+.nav-links a:hover{
+    color:#00f7ff;
+    text-shadow:0 0 10px #00f7ff;
+}
+/* TEXT */
+.sub-title{
+    color:#a855f7;
+    margin-top:20px;
+    font-weight:600;
+}
+section{
+    padding-top:140px;
+}
+.note{
+    margin-top:15px;
+    line-height:1.7;
+    color:#ccc;
+}
+/* NAVBAR FIX */
+#navbar{
+    position:fixed;
+    width:100%;
+    top:0;
+    z-index:1000;
+}
+
+/* REMOVE BULLET */
+nav ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+nav li{
+    list-style:none;
+}
+/* FILE BOX */
+.file-box{
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(0,247,255,0.2);
+}
+
+/* BUTTON */
+.btn{
+    display:inline-block;
+    margin-top:15px;
+    margin-right:10px;
+    padding:12px 20px;
+    background:#7e22ce;
+    color:white;
+    border-radius:8px;
+    text-decoration:none;
+    transition:0.3s;
+}/* NAVBAR FIX */
+#navbar{
+    position:fixed;
+    width:100%;
+    top:0;
+    z-index:1000;
+}
+
+/* REMOVE BULLET */
+nav ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+nav li{
+    list-style:none;
+}
+
+.btn:hover{
+    background:#a855f7;
+    box-shadow:0 0 15px #a855f7;
+}
+
+.btn-outline{
+    background:transparent;
+    border:1px solid #00f7ff;
+    color:#00f7ff;
+}
+
+.btn-outline:hover{
+    background:#00f7ff;
+    color:black;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div id="navbar"></div>
+
+<!-- BACKGROUND -->
+<canvas id="hexCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+
+<section>
+<div class="container">
+
+<h1>Abstract Submission Guidelines</h1>
+
+<div class="box">
+
+<ul>
+    <li>Abstract should be prepared in Microsoft Word.</li>
+    <li>Please download the abstract template from the website.</li>
+    <li>Abstracts must be prepared in English.</li>
+    <li>Abstracts should not exceed 250 words (Text only).</li>
+    <li>Maximum one figure and two references are allowed.</li>
+</ul>
+
+<div class="sub-title">Note:</div>
+
+<p class="note">
+Full length papers submission is optional.
+</p>
+
+<p class="note">
+Ensure your email and phone number are correct.
+</p>
+
+<p class="note">
+Abstracts can be submitted for <b>Oral</b> or <b>Poster</b>.
+</p>
+
+<div class="sub-title">Preparation of Abstracts</div>
+
+<p class="note">
+Follow the template strictly.
+</p>
+
+<div class="file-box">
+    <p>📄 Abstract Template</p>
+
+    <a href="submission11.pdf" download class="btn">Download</a>
+    <a href="submission11.pdf" target="_blank" class="btn btn-outline">Preview</a>
+</div>
+
+<a href="https://cmt3.research.microsoft.com/" target="_blank" class="btn">
+    Submit Abstract
+</a>
+
+</div>
+
+</div>
+</section>
+
+<script>
+//////////////// HEX //////////////////
+const hexCanvas=document.getElementById("hexCanvas");
+const hexCtx=hexCanvas.getContext("2d");
+
+let grid=[];
+const HEX_SIZE=35;
+
+function resize(){
+    hexCanvas.width=window.innerWidth;
+    hexCanvas.height=window.innerHeight;
+    particleCanvas.width=window.innerWidth;
+    particleCanvas.height=window.innerHeight;
+    generateGrid();
+}
+window.addEventListener("resize",resize);
+
+function generateGrid(){
+    grid=[];
+    const w=Math.sqrt(3)*HEX_SIZE;
+    const h=2*HEX_SIZE;
+
+    for(let r=0;r<30;r++){
+        for(let c=0;c<30;c++){
+            const offset=(r%2===0)?0:w/2;
+            grid.push({x:c*w+offset,y:r*(h*0.75),intensity:Math.random()*0.3});
+        }
+    }
+}
+
+function drawHex(x,y,size,intensity){
+    hexCtx.beginPath();
+    for(let i=0;i<6;i++){
+        const a=Math.PI/3*i;
+        const px=x+size*Math.cos(a);
+        const py=y+size*Math.sin(a);
+        i===0?hexCtx.moveTo(px,py):hexCtx.lineTo(px,py);
+    }
+    hexCtx.closePath();
+    hexCtx.strokeStyle=`rgba(16,185,129,${intensity})`;
+    hexCtx.stroke();
+}
+
+function animateHex(){
+    hexCtx.clearRect(0,0,hexCanvas.width,hexCanvas.height);
+    grid.forEach(h=>{
+        h.intensity+=(Math.random()-0.5)*0.02;
+        h.intensity=Math.max(0.05,Math.min(0.3,h.intensity));
+        drawHex(h.x,h.y,HEX_SIZE,h.intensity);
+    });
+    requestAnimationFrame(animateHex);
+}
+
+//////////////// PARTICLES //////////////////
+const particleCanvas=document.getElementById("particleCanvas");
+const pCtx=particleCanvas.getContext("2d");
+
+let particles=[];
+for(let i=0;i<120;i++){
+    particles.push({
+        x:Math.random()*window.innerWidth,
+        y:Math.random()*window.innerHeight,
+        size:Math.random()*2,
+        speed:Math.random()*1+0.3
+    });
+}
+
+function animateParticles(){
+    pCtx.clearRect(0,0,particleCanvas.width,particleCanvas.height);
+    pCtx.fillStyle="rgba(255,255,255,0.6)";
+    particles.forEach(p=>{
+        pCtx.beginPath();
+        pCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        pCtx.fill();
+        p.y+=p.speed;
+        if(p.y>window.innerHeight){
+            p.y=0;
+            p.x=Math.random()*window.innerWidth;
+        }
+    });
+    requestAnimationFrame(animateParticles);
+}
+
+resize();
+animateHex();
+animateParticles();
+</script>
+<script>
+fetch("navbar.html")
+.then(res => res.text())
+.then(data => {
+    document.getElementById("navbar").innerHTML = data;
+});
+</script>
+<script>
+fetch("navbar.html")
+.then(res => res.text())
+.then(data => {
+    document.getElementById("navbar").innerHTML = data;
+});
+</script>
+</body>
+</html>

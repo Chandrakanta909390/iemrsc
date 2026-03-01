@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEMRSC - Participation</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#0f172a;
+    color:white;
+    overflow:hidden;
+}
+
+/* HEX */
+#hexCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:0;
+    pointer-events:none;
+}
+
+/* NAVBAR */
+nav{
+    position:fixed;
+    width:100%;
+    top:0;
+    display:flex;
+    justify-content:space-between;
+    padding:15px 40px;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(8px);
+    z-index:1000;
+}
+
+nav ul{
+    display:flex;
+    gap:25px;
+    list-style:none;
+}
+
+nav li:hover{
+    color:#00f7ff;
+}
+
+/* CONTAINER */
+.container{
+    position:relative;
+    z-index:10;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+
+/* FORM */
+.form-box{
+    width:350px;
+    padding:25px;
+    border-radius:14px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+
+    border:1px solid rgba(0,247,255,0.3);
+    box-shadow:0 0 20px rgba(0,247,255,0.2);
+
+    text-align:center;
+}
+
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:none;
+    border-radius:8px;
+    background:rgba(255,255,255,0.08);
+    color:white;
+}
+
+textarea{
+    height:80px;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:#00f7ff;
+    color:black;
+    cursor:pointer;
+}
+
+button:hover{
+    box-shadow:0 0 15px #00f7ff;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="hexCanvas"></canvas>
+
+<nav>
+    <div>IEMRSC</div>
+    <ul>
+        <li onclick="window.location.href='index.html'">Home</li>
+        <li onclick="window.location.href='about.html'">About</li>
+        <li onclick="window.location.href='contact.html'">Contact</li>
+        <li onclick="logout()">Logout</li>
+    </ul>
+</nav>
+
+<div class="container">
+
+    <h2 style="margin-bottom:20px;">Participation Form</h2>
+
+    <div class="form-box">
+        <form onsubmit="submitForm(event)">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="text" id="college" placeholder="College Name" required>
+            <textarea id="topic" placeholder="Research Topic" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+</div>
+
+<script>
+// LOGIN CHECK
+if(localStorage.getItem("isLoggedIn") !== "true"){
+    window.location.href="login.html";
+}
+
+// LOGOUT
+function logout(){
+    localStorage.setItem("isLoggedIn","false");
+    window.location.href="login.html";
+}
+
+// FORM SUBMIT
+function submitForm(e){
+    e.preventDefault();
+
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let college = document.getElementById("college").value;
+    let topic = document.getElementById("topic").value;
+
+    alert("Registration Submitted Successfully!");
+
+    // OPTIONAL MAIL
+    let body = `Name: ${name}%0D%0AEmail: ${email}%0D%0ACollege: ${college}%0D%0ATopic: ${topic}`;
+    window.location.href = `mailto:your@email.com?subject=Participation&body=${body}`;
+}
+
+// HEX EFFECT
+const canvas=document.getElementById("hexCanvas");
+const ctx=canvas.getContext("2d");
+
+let w,h,grid=[];
+const size=35;
+
+function resize(){
+    w=canvas.width=window.innerWidth;
+    h=canvas.height=window.innerHeight;
+}
+window.addEventListener("resize",resize);
+
+function animate(){
+    ctx.clearRect(0,0,w,h);
+    ctx.strokeStyle="rgba(255,255,255,0.05)";
+    for(let x=0;x<w;x+=40){
+        for(let y=0;y<h;y+=40){
+            ctx.strokeRect(x,y,30,30);
+        }
+    }
+    requestAnimationFrame(animate);
+}
+
+resize();
+animate();
+</script>
+
+</body>
+</html>

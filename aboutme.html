@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEMRSC - About</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#0f172a;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* BACKGROUND */
+#hexCanvas,#particleCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+#hexCanvas{z-index:0;}
+#particleCanvas{z-index:1;}
+
+.container{
+    position:relative;
+    z-index:10;
+    padding:100px 20px;
+    text-align:center;
+}
+
+/* ABOUT BOX */
+.about-box{
+    max-width:800px;
+    margin:auto;
+    padding:30px;
+    border-radius:16px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(0,247,255,0.3);
+
+    box-shadow:0 0 15px rgba(0,247,255,0.2);
+    line-height:1.7;
+}
+
+/* TITLE */
+h1{
+    font-family:'Orbitron',sans-serif;
+    margin-bottom:20px;
+}
+
+/* TEAM HEADING */
+.team-heading{
+    margin:40px 0 15px;
+    font-family:'Orbitron',sans-serif;
+    font-size:28px;
+    color:#00f7ff;
+
+    text-shadow:0 0 10px #00f7ff;
+}
+
+/* CARD GRID */
+.card-container{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    max-width:1100px;
+    margin:auto;
+}
+
+/* CARD */
+.card{
+    width:220px;
+    height:280px;
+    border-radius:16px;
+    overflow:hidden;
+    margin:auto;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(0,247,255,0.3);
+
+    transition:0.4s;
+}
+
+.card img{
+    width:100%;
+    height:60%;
+    object-fit:cover;
+}
+
+.card h3{
+    margin-top:10px;
+}
+
+/* HOVER */
+.card:hover{
+    height:340px;
+    transform:translateY(-10px) scale(1.05);
+    box-shadow:0 0 25px #00f7ff;
+}
+.nav-links a{
+    text-decoration:none;
+    color:white;
+}
+
+.nav-links a:hover{
+    color:#00f7ff;
+    text-shadow:0 0 10px #00f7ff;
+}
+/* INFO */
+.card-info{
+    opacity:0;
+    transform:translateY(20px);
+    transition:0.3s;
+}
+
+.card:hover .card-info{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* LINK */
+.card-info a{
+    display:inline-block;
+    margin-top:8px;
+    color:#00f7ff;
+    text-decoration:none;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .card-container{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:500px){
+    .card-container{grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+    <div id="navbar"></div>
+
+<canvas id="hexCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
+
+<div class="container">
+
+<h1>About IEMRSC</h1>
+
+<div class="about-box">
+<p>
+The Research Scholar Conclave (IEMRSC) is a national-level platform designed 
+to bring together brilliant minds from across India. It encourages innovation, 
+research excellence, and impactful ideas through presentations and discussions.
+</p>
+
+<br>
+
+<p>
+Participants will showcase their research, exchange knowledge, and connect 
+with scholars, mentors, and industry experts. The event aims to inspire 
+creativity and foster a culture of learning and collaboration.
+</p>
+</div>
+
+<h2 class="team-heading">Meet Our Coordinators</h2>
+
+<div class="card-container">
+
+<div class="card">
+<img src="https://via.placeholder.com/300x200">
+<h3>John Doe</h3>
+<div class="card-info">
+<p>Event Coordinator</p>
+<a href="#">LinkedIn</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/300x200">
+<h3>Jane Smith</h3>
+<div class="card-info">
+<p>Technical Lead</p>
+<a href="#">LinkedIn</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/300x200">
+<h3>Rahul Kumar</h3>
+<div class="card-info">
+<p>Design Head</p>
+<a href="#">LinkedIn</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/300x200">
+<h3>Ananya Das</h3>
+<div class="card-info">
+<p>Marketing Head</p>
+<a href="#">LinkedIn</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/300x200">
+<h3>Arjun Roy</h3>
+<div class="card-info">
+<p>Research Lead</p>
+<a href="#">LinkedIn</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/300x200">
+<h3>Priya Sen</h3>
+<div class="card-info">
+<p>Content Manager</p>
+<a href="#">LinkedIn</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/300x200">
+<h3>Rohit Das</h3>
+<div class="card-info">
+<p>Operations Head</p>
+<a href="#">LinkedIn</a>
+</div>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/300x200">
+<h3>Sneha Paul</h3>
+<div class="card-info">
+<p>Event Manager</p>
+<a href="#">LinkedIn</a>
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+// HEX
+const hexCanvas=document.getElementById("hexCanvas");
+const hexCtx=hexCanvas.getContext("2d");
+
+let grid=[];
+const HEX_SIZE=35;
+
+function resize(){
+    hexCanvas.width=window.innerWidth;
+    hexCanvas.height=window.innerHeight;
+    particleCanvas.width=window.innerWidth;
+    particleCanvas.height=window.innerHeight;
+    generateGrid();
+}
+window.addEventListener("resize",resize);
+
+function generateGrid(){
+    grid=[];
+    const w=Math.sqrt(3)*HEX_SIZE;
+    const h=2*HEX_SIZE;
+
+    for(let r=0;r<30;r++){
+        for(let c=0;c<30;c++){
+            const offset=(r%2===0)?0:w/2;
+            grid.push({x:c*w+offset,y:r*(h*0.75),intensity:Math.random()*0.3});
+        }
+    }
+}
+
+function drawHex(x,y,size,intensity){
+    hexCtx.beginPath();
+    for(let i=0;i<6;i++){
+        const a=Math.PI/3*i;
+        const px=x+size*Math.cos(a);
+        const py=y+size*Math.sin(a);
+        i===0?hexCtx.moveTo(px,py):hexCtx.lineTo(px,py);
+    }
+    hexCtx.closePath();
+    hexCtx.strokeStyle=`rgba(16,185,129,${intensity})`;
+    hexCtx.stroke();
+}
+
+function animateHex(){
+    hexCtx.clearRect(0,0,hexCanvas.width,hexCanvas.height);
+    grid.forEach(h=>{
+        h.intensity+=(Math.random()-0.5)*0.02;
+        h.intensity=Math.max(0.05,Math.min(0.3,h.intensity));
+        drawHex(h.x,h.y,HEX_SIZE,h.intensity);
+    });
+    requestAnimationFrame(animateHex);
+}
+
+// PARTICLES
+const particleCanvas=document.getElementById("particleCanvas");
+const pCtx=particleCanvas.getContext("2d");
+
+let particles=[];
+for(let i=0;i<120;i++){
+    particles.push({
+        x:Math.random()*window.innerWidth,
+        y:Math.random()*window.innerHeight,
+        size:Math.random()*2,
+        speed:Math.random()*1+0.3
+    });
+}
+
+function animateParticles(){
+    pCtx.clearRect(0,0,particleCanvas.width,particleCanvas.height);
+    pCtx.fillStyle="rgba(255,255,255,0.6)";
+    particles.forEach(p=>{
+        pCtx.beginPath();
+        pCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        pCtx.fill();
+        p.y+=p.speed;
+        if(p.y>window.innerHeight){
+            p.y=0;
+            p.x=Math.random()*window.innerWidth;
+        }
+    });
+    requestAnimationFrame(animateParticles);
+}
+
+resize();
+animateHex();
+animateParticles();
+</script>
+<script>
+fetch("navbar.html")
+.then(res => res.text())
+.then(data => {
+    document.getElementById("navbar").innerHTML = data;
+});
+</script>
+
+</body>
+</html>

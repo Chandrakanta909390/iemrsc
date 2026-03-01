@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!-- ===== NAVBAR START ===== -->
+<style>
+.navbar{
+    position:fixed;
+    width:100%;
+    top:0;
+    left:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(12px);
+    z-index:9999;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Orbitron',sans-serif;
+}
+
+.logo img{
+    width:40px;
+    height:40px;
+    filter:drop-shadow(0 0 6px #00f7ff);
+}
+
+.logo span{
+    color:white;
+    font-weight:600;
+}
+
+/* NAV LINKS */
+.nav-links{
+    display:flex;
+    gap:30px;
+    list-style:none;
+}
+
+.nav-links li{
+    position:relative;
+}
+
+/* LINKS */
+.nav-links a{
+    text-decoration:none;
+    color:white;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:#00f7ff;
+    text-shadow:0 0 10px #00f7ff;
+}
+
+/* UNDERLINE */
+.nav-links li::after{
+    content:"";
+    position:absolute;
+    bottom:-5px;
+    left:0;
+    width:0%;
+    height:2px;
+    background:#00f7ff;
+    transition:0.3s;
+}
+
+.nav-links li:hover::after{
+    width:100%;
+}
+
+/* LOGOUT BUTTON */
+.logout-btn a{
+    border:1px solid #00f7ff;
+    padding:6px 14px;
+    border-radius:6px;
+    color:#00f7ff;
+}
+
+.logout-btn a:hover{
+    background:#00f7ff;
+    color:black;
+}
+</style>
+
+<nav class="navbar">
+
+  <div class="logo">
+    <img src="logo_IEMRSC.png" alt="Logo">
+    <span>IEMRSC</span>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="key_date.html">Key Dates</a></li>
+    <li><a href="register.html">Registration</a></li>
+    <li><a href="submission.html">Submission</a></li>
+    <li><a href="committee.html">Committee</a></li>
+    <li><a href="publication.html">Publication</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li class="logout-btn"><a href="login.html">Logout</a></li>
+  </ul>
+
+</nav>
+<!-- ===== NAVBAR END ===== -->
+
+
+<!-- ===== NAVBAR END ===== -->
+</body>
+</html>
