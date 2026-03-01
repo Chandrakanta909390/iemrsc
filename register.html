@@ -30,12 +30,12 @@
     font-weight:500;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-
 body{
     font-family:'Poppins',sans-serif;
     background:#0f172a;
     color:white;
-    overflow:hidden;
+    overflow-x:hidden;   /* allow vertical scroll */
+    overflow-y:auto;
 }
 
 /* CANVAS */
@@ -54,9 +54,10 @@ body{
     z-index:10;
     display:flex;
     justify-content:center;
-    align-items:center;
-    min-height:100vh;
+    align-items:flex-start; /* IMPORTANT */
+    min-height:auto;
     padding:20px;
+    margin-top:100px;
 }
 
 /* CARD */
