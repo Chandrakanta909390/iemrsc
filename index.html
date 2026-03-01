@@ -14,10 +14,17 @@ body{
     font-family:'Poppins',sans-serif;
     background:#0f172a;
     color:#ccc;
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:auto;
 }
 
 /* CANVAS */
+#navbar{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
 #hexCanvas, #particleCanvas{
     position:fixed;
     top:0;
@@ -40,6 +47,7 @@ section{
     justify-content:center;
     align-items:center;
     text-align:center;
+    padding-top:120px;
 }
 
 /* TITLE */
@@ -59,17 +67,17 @@ p{
     display:flex;
     gap:20px;
     margin-top:30px;
+    flex-wrap:wrap;
+    justify-content:center;
 }
 
 .time-box{
     padding:20px;
     border-radius:14px;
     min-width:90px;
-
     background:rgba(255,255,255,0.05);
     backdrop-filter:blur(12px);
     border:1px solid rgba(0,247,255,0.3);
-
     transition:0.3s;
 }
 
@@ -77,18 +85,8 @@ p{
     transform:translateY(-6px);
     box-shadow:0 0 20px #00f7ff;
 }
-#navbar{
-    position:fixed;
-    top:0;
-    width:100%;
-    z-index:1000;
-}
 
-/* PUSH CONTENT DOWN */
-section{
-    padding-top:120px;
-}
-/* ORGANIZATION SECTION */
+/* ORGANIZATION */
 .org-section{
     margin-top:60px;
 }
@@ -111,11 +109,9 @@ section{
     width:180px;
     padding:20px;
     border-radius:14px;
-
     background:rgba(255,255,255,0.05);
     backdrop-filter:blur(12px);
     border:1px solid rgba(0,247,255,0.3);
-
     transition:0.3s;
 }
 
@@ -146,7 +142,6 @@ section{
     <h1>Research Scholar Conclave 2026</h1>
     <p>1 August 2026</p>
 
-    <!-- COUNTDOWN -->
     <div class="countdown">
         <div class="time-box"><span id="days">0</span><br>Days</div>
         <div class="time-box"><span id="hours">0</span><br>Hours</div>
@@ -154,26 +149,21 @@ section{
         <div class="time-box"><span id="seconds">0</span><br>Seconds</div>
     </div>
 
-    <!-- ORGANIZATIONS -->
     <div class="org-section">
         <h2 class="org-heading">Organizing Institutions</h2>
-
         <div class="org-container">
             <div class="org-card">
                 <img src="iem_new_logo.png">
                 <p>IEM Kolkata</p>
             </div>
-
             <div class="org-card">
                 <img src="aph.png">
                 <p>APH</p>
             </div>
-
             <div class="org-card">
                 <img src="logo_IEMRSC.png">
                 <p>IEMRSC</p>
             </div>
-
             <div class="org-card">
                 <img src="uem_logo_rsc.png">
                 <p>UEM</p>
@@ -201,11 +191,13 @@ setInterval(()=>{
     }
 },1000);
 
-//////////////// HEX //////////////////
+//////////////// HEX GRID WITH RAINBOW HOVER //////////////////
 const canvas = document.getElementById("hexCanvas");
 const ctx = canvas.getContext("2d");
 
 let grid=[];
+let mouse = {x:0,y:0};
+let hoverTime = 0;
 const HEX_SIZE=35;
 
 function resize(){
@@ -214,6 +206,12 @@ function resize(){
     generateGrid();
 }
 window.addEventListener("resize",resize);
+
+window.addEventListener("mousemove",(e)=>{
+    mouse.x=e.clientX;
+    mouse.y=e.clientY;
+    hoverTime=Date.now();
+});
 
 function generateGrid(){
     grid=[];
@@ -229,6 +227,22 @@ function generateGrid(){
 }
 
 function drawHex(x,y,size,intensity){
+    const dx=x-mouse.x;
+    const dy=y-mouse.y;
+    const distance=Math.sqrt(dx*dx+dy*dy);
+
+    let color;
+
+    if(distance<120 && (Date.now()-hoverTime)<500){
+        const hue=(Date.now()/5+distance)%360;
+        color=`hsla(${hue},100%,60%,${intensity+0.4})`;
+        ctx.shadowBlur=15;
+        ctx.shadowColor=color;
+    }else{
+        color=`rgba(0,247,255,${intensity})`;
+        ctx.shadowBlur=0;
+    }
+
     ctx.beginPath();
     for(let i=0;i<6;i++){
         const a=Math.PI/3*i;
@@ -237,19 +251,23 @@ function drawHex(x,y,size,intensity){
         i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
     }
     ctx.closePath();
-    ctx.strokeStyle=`rgba(16,185,129,${intensity})`;
+    ctx.strokeStyle=color;
     ctx.stroke();
 }
 
 function animateHex(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     grid.forEach(h=>{
-        h.intensity+=(Math.random()-0.5)*0.02;
-        h.intensity=Math.max(0.05,Math.min(0.3,h.intensity));
+        h.intensity+=(Math.random()-1.5)*0.08;
+        h.intensity=Math.max(0.08,Math.min(8.9,h.intensity));
         drawHex(h.x,h.y,HEX_SIZE,h.intensity);
     });
     requestAnimationFrame(animateHex);
 }
+
+resize();
+generateGrid();
+animateHex();
 
 //////////////// PARTICLES //////////////////
 const pCanvas=document.getElementById("particleCanvas");
@@ -267,30 +285,22 @@ for(let i=0;i<120;i++){
 
 function animateParticles(){
     pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
-    pCtx.fillStyle="white";
-
+    pCtx.fillStyle="rgba(255,255,255,0.6)";
     particles.forEach(p=>{
         pCtx.beginPath();
         pCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
         pCtx.fill();
-
         p.y+=p.speed;
-
         if(p.y>window.innerHeight){
             p.y=0;
             p.x=Math.random()*window.innerWidth;
         }
     });
-
     requestAnimationFrame(animateParticles);
 }
 
-resize();
 pCanvas.width=window.innerWidth;
 pCanvas.height=window.innerHeight;
-
-generateGrid();
-animateHex();
 animateParticles();
 </script>
 <script>
