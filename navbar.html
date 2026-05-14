@@ -1,73 +1,60 @@
-<nav class="navbar">
-    <div class="logo">
-        <img src="logo_IEMRSC.png" alt="Logo">
-        <span>IEMRSC</span>
-    </div>
-
-    <ul class="nav-links" id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Committee</a></li>
-        <li><a href="#">Events</a></li>
-        <li><a href="#">Contact</a></li>
-    </ul>
-
-    <div class="hamburger" id="hamburger">
-        ☰
-    </div>
-</nav>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!-- ===== NAVBAR START ===== -->
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
 .navbar{
     position:fixed;
+    width:100%;
     top:0;
     left:0;
-    width:100%;
-    padding:15px 40px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    background:rgba(15,23,42,0.85);
+    padding:15px 40px;
+    background:rgba(0,0,0,0.6);
     backdrop-filter:blur(12px);
-    z-index:1000;
-    border-bottom:1px solid rgba(0,247,255,0.2);
+    z-index:9999;
 }
 
 .logo{
     display:flex;
     align-items:center;
     gap:10px;
+    font-family:'Orbitron',sans-serif;
 }
 
 .logo img{
-    width:50px;
-    height:50px;
-    object-fit:contain;
+    width:40px;
+    height:40px;
+    filter:drop-shadow(0 0 6px #00f7ff);
 }
 
 .logo span{
-    color:#00f7ff;
-    font-size:22px;
-    font-family:'Orbitron', sans-serif;
-    text-shadow:0 0 8px #00f7ff;
+    color:white;
+    font-weight:600;
 }
 
+/* NAV LINKS */
 .nav-links{
     display:flex;
     gap:30px;
     list-style:none;
 }
 
+.nav-links li{
+    position:relative;
+}
+
+/* LINKS */
 .nav-links a{
-    color:white;
     text-decoration:none;
-    font-size:16px;
+    color:white;
     transition:0.3s;
 }
 
@@ -76,63 +63,59 @@
     text-shadow:0 0 10px #00f7ff;
 }
 
-.hamburger{
-    display:none;
-    font-size:32px;
+/* UNDERLINE */
+.nav-links li::after{
+    content:"";
+    position:absolute;
+    bottom:-5px;
+    left:0;
+    width:0%;
+    height:2px;
+    background:#00f7ff;
+    transition:0.3s;
+}
+
+.nav-links li:hover::after{
+    width:100%;
+}
+
+/* LOGOUT BUTTON */
+.logout-btn a{
+    border:1px solid #00f7ff;
+    padding:6px 14px;
+    border-radius:6px;
     color:#00f7ff;
-    cursor:pointer;
 }
 
-/* MOBILE RESPONSIVE */
-@media(max-width:768px){
-
-    .navbar{
-        padding:15px 20px;
-    }
-
-    .hamburger{
-        display:block;
-    }
-
-    .nav-links{
-        position:absolute;
-        top:80px;
-        left:0;
-        width:100%;
-        background:rgba(15,23,42,0.95);
-        backdrop-filter:blur(15px);
-
-        flex-direction:column;
-        align-items:center;
-        gap:25px;
-        padding:25px 0;
-
-        display:none;
-    }
-
-    .nav-links.active{
-        display:flex;
-        animation:slideDown 0.4s ease;
-    }
-}
-
-@keyframes slideDown{
-    from{
-        opacity:0;
-        transform:translateY(-20px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
+.logout-btn a:hover{
+    background:#00f7ff;
+    color:black;
 }
 </style>
 
-<script>
-const hamburger = document.getElementById("hamburger");
-const navLinks = document.getElementById("navLinks");
+<nav class="navbar">
 
-hamburger.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-});
-</script>
+  <div class="logo">
+    <img src="logo_IEMRSC.png" alt="Logo">
+    <span>IEMRSC</span>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="key_date.html">Key Dates</a></li>
+    <li><a href="register.html">Registration</a></li>
+    <li><a href="submission.html">Submission</a></li>
+    <li><a href="committee.html">Committee</a></li>
+    <li><a href="publication.html">Publication</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li class="logout-btn"><a href="login.html">Logout</a></li>
+  </ul>
+
+</nav>
+<!-- ===== NAVBAR END ===== -->
+
+
+<!-- ===== NAVBAR END ===== -->
+</body>
+</html>
