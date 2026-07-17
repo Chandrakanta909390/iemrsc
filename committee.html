@@ -84,12 +84,22 @@ nav ul, nav li{
 }
 </style>
 </head>
-
+<div id="scrollProgress"></div>
 <body>
 
 <!-- NAVBAR -->
 <div id="navbar"></div>
-
+#scrollProgress{
+    position:fixed;
+    top:0;
+    right:0;
+    width:6px;
+    height:0%;
+    background:linear-gradient(#00f7ff,#a855f7);
+    z-index:9999;
+    border-radius:10px;
+    box-shadow:0 0 15px #00f7ff;
+}
 <!-- BACKGROUND -->
 <canvas id="hexCanvas"></canvas>
 <canvas id="particleCanvas"></canvas>
@@ -157,6 +167,19 @@ nav ul, nav li{
 </section>
 
 <script>
+    window.addEventListener("scroll", () => {
+
+    const winScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+
+    const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+
+    const scrolled = (winScroll / height) * 100;
+
+    document.getElementById("scrollProgress").style.height = scrolled + "%";
+});
 /* NAVBAR LOAD */
 fetch("navbar.html")
 .then(res => res.text())
