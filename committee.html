@@ -14,7 +14,7 @@ body{
     font-family:'Poppins',sans-serif;
     background:#0f172a;
     color:white;
-    overflow:hidden; /* for animation */
+    overflow-x:hidden;
 }
 
 /* CANVAS */
@@ -33,6 +33,19 @@ body{
     width:100%;
     top:0;
     z-index:1000;
+}
+
+/* SCROLL PROGRESS BAR */
+#scrollProgress{
+    position:fixed;
+    top:0;
+    right:0;
+    width:6px;
+    height:0%;
+    background:linear-gradient(#00f7ff,#a855f7);
+    z-index:9999;
+    border-radius:10px;
+    box-shadow:0 0 15px #00f7ff;
 }
 
 /* SECTION */
@@ -84,22 +97,14 @@ nav ul, nav li{
 }
 </style>
 </head>
-<div id="scrollProgress"></div>
 <body>
+
+<!-- SCROLL PROGRESS BAR -->
+<div id="scrollProgress"></div>
 
 <!-- NAVBAR -->
 <div id="navbar"></div>
-#scrollProgress{
-    position:fixed;
-    top:0;
-    right:0;
-    width:6px;
-    height:0%;
-    background:linear-gradient(#00f7ff,#a855f7);
-    z-index:9999;
-    border-radius:10px;
-    box-shadow:0 0 15px #00f7ff;
-}
+
 <!-- BACKGROUND -->
 <canvas id="hexCanvas"></canvas>
 <canvas id="particleCanvas"></canvas>
@@ -180,6 +185,7 @@ nav ul, nav li{
 
     document.getElementById("scrollProgress").style.height = scrolled + "%";
 });
+
 /* NAVBAR LOAD */
 fetch("navbar.html")
 .then(res => res.text())
